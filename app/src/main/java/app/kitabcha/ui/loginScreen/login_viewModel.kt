@@ -11,6 +11,16 @@ import kotlinx.coroutines.launch
 
 class login_viewModel(application: Application): AndroidViewModel(application) {
 
+    var name_of_User:String="0"
+    var password_received:String="0"
+    fun getUserData(name_received:String,password_coming:String)
+    {
+        name_of_User = name_received
+        password_received=password_coming
+
+        var userX = User(0,name_of_User,password_received)
+        addUser(userX)
+    }
 
     private val repository: Repository
 

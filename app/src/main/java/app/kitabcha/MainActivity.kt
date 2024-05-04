@@ -6,6 +6,7 @@ import androidx.compose.material3.Button
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
+import androidx.activity.viewModels
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
@@ -29,8 +30,12 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.semantics.Role.Companion.Button
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
+import androidx.lifecycle.ViewModel
+import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.compose.rememberNavController
 import app.kitabcha.ui.theme.KitabchaTheme
+import com.mkrdeveloper.viewmodeljetpack.MainViewModel
+import com.mkrdeveloper.viewmodeljetpack.app.kitabcha.ui.loginScreen.login_viewModel
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -39,11 +44,12 @@ class MainActivity : ComponentActivity() {
         setContent {
             val scope = rememberCoroutineScope()
             val nav = rememberNavController()
+            val loginViewModel=ViewModelProvider(this)[MainViewModel::class.java]// login_viewModel by viewModels()
             KitabchaTheme {
                 Surface(
                     modifier = Modifier.fillMaxSize(),
                 ) {
-                    Login_main()
+                    Login_main(loginViewModel)
                 }
             }
         }
@@ -51,7 +57,7 @@ class MainActivity : ComponentActivity() {
 }
 
 @Composable
-fun Login_main()
+fun Login_main(login: MainViewModel)
 {
     var name by remember { mutableStateOf("") } // name of user
     var password by remember { mutableStateOf("") } // name of user
@@ -79,7 +85,7 @@ fun Login_main()
         )
         passwordField(password,{password=it},Modifier.padding(bottom=20.dp).fillMaxWidth())
         Spacer(modifier = Modifier.height(50.dp))
-        Button(onClick = {  })
+        Button(onClick = {login.getUserData(name,password)})
         {
             Text(text="Login")
         }
